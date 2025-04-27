@@ -1,0 +1,24 @@
+[
+  {
+    "name": "",
+    "job": "Engineer"
+  },
+  {
+    "name": "Test User",
+    "job": ""
+  },
+  {
+    "name": null,
+    "job": "Developer"
+  },
+  {
+    "job": "Analyst"
+  },
+  {
+    "name": "NoJobUser"
+  },
+  {
+    "name": 12345,
+    "job": true
+  }
+]
