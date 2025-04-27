@@ -1,0 +1,1032 @@
+{
+	"info": {
+		"_postman_id": "2a850d7f-d2cd-4bec-9f48-eb6f61c15168",
+		"name": "API Testing Portfolio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44316976"
+	},
+	"item": [
+		{
+			"name": "Basic API Tests",
+			"item": [
+				{
+					"name": "Basic CRUD",
+					"item": [
+						{
+							"name": "GET users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response body is an Array\", () => {",
+											"    const resBody = pm.response.json();",
+											"    pm.expect(resBody).to.be.an('array');",
+											"});",
+											"",
+											"pm.test(\"Response contains 10 users\", () => {",
+											"    const users = pm.response.json();",
+											"    pm.expect(users.length).to.eql(10);",
+											"});",
+											"",
+											"pm.test(\"First post has expected keys\", () => {",
+											"    const firstUser = pm.response.json()[0];",
+											"    pm.expect(firstUser).to.have.keys('id', 'name', 'username', 'email', 'address', 'phone', 'website', 'company');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://jsonplaceholder.typicode.com/users",
+									"protocol": "https",
+									"host": [
+										"jsonplaceholder",
+										"typicode",
+										"com"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a New Post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", () => {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Response body has necessary data\", () => {",
+											"    const responseBody = pm.response.json();",
+											"    pm.expect(responseBody.title).to.eql(\"Portfolio Test\");",
+											"    pm.expect(responseBody.body).to.eql(\"This is a new post.\");",
+											"    pm.expect(responseBody.userId).to.eql(1);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Portfolio Test\",\n    \"body\": \"This is a new post.\",\n    \"userId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://jsonplaceholder.typicode.com/posts",
+									"protocol": "https",
+									"host": [
+										"jsonplaceholder",
+										"typicode",
+										"com"
+									],
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Full update of a Post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"PUT request successful\", () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response body reflects updated data\", () => {",
+											"    const res = pm.response.json();",
+											"    pm.expect(res.id).to.be.eql(1);",
+											"    pm.expect(res.body).to.be.eql(\"Updated body content\");",
+											"    pm.expect(res.userId).to.eql(1);",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 1,\n  \"title\": \"Updated Title\",\n  \"body\": \"Updated body content\",\n  \"userId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://jsonplaceholder.typicode.com/posts/1",
+									"protocol": "https",
+									"host": [
+										"jsonplaceholder",
+										"typicode",
+										"com"
+									],
+									"path": [
+										"posts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Partial Update of a Post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"PATCH request successful\", () => {",
+											"    pm.response.to.have.status(200); // Check if the response status is 200 OK",
+											"});",
+											"",
+											"pm.test(\"Response reflects updated data\", () => {",
+											"    const updatedData = pm.response.json(); // Parse the JSON response",
+											"    pm.expect(updatedData).to.have.property(\"title\", \"Partially Updated Title\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Partially Updated Title\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://jsonplaceholder.typicode.com/posts/1",
+									"protocol": "https",
+									"host": [
+										"jsonplaceholder",
+										"typicode",
+										"com"
+									],
+									"path": [
+										"posts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove a Post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {",
+											"    pm.expect(pm.response.code).to.eql(200);",
+											"});",
+											"",
+											"pm.test(\"Empty response body\", () => {",
+											"    const resBody = pm.response.text();",
+											"    console.log(resBody);",
+											"    pm.expect(resBody).to.eql(\"{}\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://jsonplaceholder.typicode.com/posts/1",
+									"protocol": "https",
+									"host": [
+										"jsonplaceholder",
+										"typicode",
+										"com"
+									],
+									"path": [
+										"posts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Using variables with Reqres",
+					"item": [
+						{
+							"name": "Create a new user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test if the response status code is 201 (Created)",
+											"pm.test(\"Status 201 - User created successfully\", () => {",
+											"  pm.response.to.have.status(201);",
+											"});",
+											"",
+											"// Parse the JSON response",
+											"const jsonData = pm.response.json();",
+											"",
+											"// Test if name and job are correctly returned",
+											"pm.test(\"Response contains correct name and job\", () => {",
+											"  pm.expect(jsonData.name).to.eql(\"Meryem QA\");",
+											"  pm.expect(jsonData.job).to.eql(\"QA Engineer\");",
+											"});",
+											"",
+											"// Save the user ID into a variable for chaining future requests",
+											"//pm.collectionVariables.set(\"created_user_id\", jsonData.id);",
+											"",
+											"//Since we are using Reqres which does not save data, we will set the variable to 2 for demonstration purpose ",
+											"pm.collectionVariables.set(\"created_user_id\", 2);",
+											"",
+											"// Log the created user ID",
+											"console.log(\"Created User ID:\", jsonData.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Meryem QA\",\n  \"job\": \"QA Engineer\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get new user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test if the response status code is 200 (OK)",
+											"pm.test(\"Status 200 - User fetched successfully\", () => {",
+											"  pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Parse the JSON response",
+											"const jsonData = pm.response.json();",
+											"",
+											"// Validate the fetched user ID matches the requested user ID",
+											"pm.test(\"User ID matches\", () => {",
+											"  pm.expect(jsonData.data.id).to.eql(parseInt(pm.collectionVariables.get(\"created_user_id\"), 10));",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/{{created_user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"{{created_user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update new user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test if the response status code is 200 (OK)",
+											"pm.test(\"Status 200 - User updated successfully\", () => {",
+											"  pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Parse the JSON response",
+											"const jsonData = pm.response.json();",
+											"",
+											"// Validate updated fields",
+											"pm.test(\"Updated name and job fields\", () => {",
+											"  pm.expect(jsonData.name).to.eql(\"Meryem QA Updated\");",
+											"  pm.expect(jsonData.job).to.eql(\"Lead QA Engineer\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Meryem QA Updated\",\n  \"job\": \"Lead QA Engineer\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/{{created_user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"{{created_user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Partially update the user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test if the response status code is 200 (OK)",
+											"pm.test(\"Status 200 - User patched successfully\", () => {",
+											"  pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Parse the JSON response",
+											"const jsonData = pm.response.json();",
+											"",
+											"// Validate patched job field",
+											"pm.test(\"Patched job field correctly\", () => {",
+											"  pm.expect(jsonData.job).to.eql(\"Senior QA Engineer\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"job\": \"Senior QA Engineer\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/{{created_user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"{{created_user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test if the response status code is 204 (No Content)",
+											"pm.test(\"Status 204 - User deleted successfully\", () => {",
+											"  pm.response.to.have.status(204);",
+											"});",
+											"",
+											"// Log success",
+											"console.log(\"User deletion confirmed for ID:\", pm.collectionVariables.get(\"created_user_id\"));"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/{{created_user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"{{created_user_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "This section uses an API key that is passed in the environment variables as secret key.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Authorization Tests",
+			"item": [
+				{
+					"name": "Authorization Flows",
+					"item": [
+						{
+							"name": "Without Token (Should Fail)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Expect 401 Unauthorized because no token",
+											"pm.test(\"401 Unauthorized without token\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/user",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "With Valid Token (Should Pass)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Dynamically add Authorization header if token exists",
+											"let token = pm.environment.get(\"github_token\");",
+											"",
+											"if (token) {",
+											"    pm.request.headers.add({",
+											"        key: \"Authorization\",",
+											"        value: \"Bearer \" + token",
+											"    });",
+											"    console.log(\"Authorization header added successfully.\");",
+											"} else {",
+											"    throw new Error(\"Missing github_token! Please set it in environment variables.\");",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Expect 200 OK with valid token",
+											"pm.test(\"200 OK with valid token\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Check if user login field is present",
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"User login field exists\", function () {",
+											"    pm.expect(jsonData).to.have.property(\"login\");",
+											"});",
+											"",
+											"// Optional: Log user login name",
+											"console.log(\"Authenticated as:\", jsonData.login);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/user",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "With Invalid Token (Should Fail)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Use invalid token manually",
+											"pm.request.headers.add({",
+											"    key: \"Authorization\",",
+											"    value: \"Bearer invalid_token_here\"",
+											"});",
+											"console.log(\"Invalid Authorization token used.\");"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Expect 401 Unauthorized with bad token",
+											"pm.test(\"❌ 401 Unauthorized with invalid token\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/user",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Rate Limit Testing",
+					"item": [
+						{
+							"name": "Check Rate Limit Info",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let token = pm.environment.get(\"github_token\");",
+											"",
+											"if (token) {",
+											"    pm.request.headers.add({",
+											"        key: \"Authorization\",",
+											"        value: \"Bearer \" + token",
+											"    });",
+											"    console.log(\"Authorization header added for rate limit check.\");",
+											"}",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Validate 200 OK",
+											"pm.test(\"200 OK on rate limit endpoint\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Validate rate limit fields",
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"Core rate limit info present\", function () {",
+											"    pm.expect(jsonData.rate).to.have.property(\"limit\");",
+											"    pm.expect(jsonData.rate).to.have.property(\"remaining\");",
+											"});",
+											"",
+											"// Warn if remaining quota is low",
+											"pm.test(\"Rate limit remaining above 5\", function () {",
+											"    pm.expect(jsonData.rate.remaining).to.be.above(5);",
+											"});",
+											"",
+											"// Log remaining API calls",
+											"console.log(\"Remaining API calls:\", jsonData.rate.remaining);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/rate_limit",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"rate_limit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Data Driven Tests",
+			"item": [
+				{
+					"name": "Positive tests",
+					"item": [
+						{
+							"name": "Create valid users from JSON file",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test if the response status code is 201 (Created)",
+											"pm.test(\"Status 201 - User created successfully\", () => {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"// Parse the JSON response",
+											"const jsonData = pm.response.json();",
+											"",
+											"// Fetch the input data for this iteration",
+											"const inputName = pm.iterationData.get(\"name\");",
+											"const inputJob = pm.iterationData.get(\"job\");",
+											"",
+											"// Validate the response contains correct name and job",
+											"pm.test(\"Response contains correct name\", () => {",
+											"    pm.expect(jsonData.name).to.eql(inputName);",
+											"});",
+											"",
+											"pm.test(\"Response contains correct job\", () => {",
+											"    pm.expect(jsonData.job).to.eql(inputJob);",
+											"});",
+											"",
+											"// Validate that the response contains an ID",
+											"pm.test(\"Response contains an ID\", () => {",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"});",
+											"",
+											"// Validate that the response contains a createdAt timestamp",
+											"pm.test(\"Response contains createdAt timestamp\", () => {",
+											"    pm.expect(jsonData).to.have.property(\"createdAt\");",
+											"});",
+											"",
+											"// Log the created user",
+											"console.log(\"Created User:\", jsonData);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{name}}\",\n    \"job\": \"{{job}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative tests using bad data",
+					"item": [
+						{
+							"name": "Invalid users from JSON file",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test if the status code is 400 or 422 for bad requests",
+											"pm.test(\"Status is 400 or 422 for invalid input\", () => {",
+											"    pm.expect(pm.response.code).to.be.oneOf([400, 422, 201]);",
+											"});",
+											"",
+											"// Parse the JSON response",
+											"const jsonData = pm.response.json();",
+											"",
+											"// Fetch input for this iteration",
+											"const inputName = pm.iterationData.get(\"name\");",
+											"const inputJob = pm.iterationData.get(\"job\");",
+											"",
+											"// If the name or job is missing/invalid, expect an error",
+											"if (!inputName || typeof inputName !== \"string\" || !inputJob || typeof inputJob !== \"string\") {",
+											"    pm.test(\"Error message present for invalid data\", () => {",
+											"        pm.expect(jsonData).to.have.any.keys(\"error\");",
+											"    });",
+											"} else {",
+											"    // If valid, still check if user created (because reqres may still create)",
+											"    pm.test(\"If valid input, user created\", () => {",
+											"        pm.expect(jsonData).to.have.property(\"id\");",
+											"        pm.expect(jsonData).to.have.property(\"createdAt\");",
+											"    });",
+											"}",
+											"",
+											"// Log what happened",
+											"console.log(\"Input:\", {name: inputName, job: inputJob});",
+											"console.log(\"Response:\", jsonData);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{name}}\",\n    \"job\": \"{{job}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "We'll test invalid scenarios like:\n\n- Missing name\n    \n- Missing job\n    \n- Empty body\n    \n- Sending wrong data types (number instead of string)"
+				}
+			]
+		},
+		{
+			"name": "Error Handling",
+			"item": []
+		},
+		{
+			"name": "Performance Tests",
+			"item": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{x-api-key}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "x-api-key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://reqres.in",
+			"type": "string"
+		},
+		{
+			"key": "created_post_id",
+			"value": ""
+		},
+		{
+			"key": "created_user_id",
+			"value": ""
+		},
+		{
+			"key": "github_base_url",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
