@@ -81,9 +81,9 @@ Inside the collection, you will find organized folders for each type of testing:
 - API_Testing_Portfolio.postman_collection.json
 
 3. **Set Environment Variables (before running requests)**:
-base_url
-api_key
-github_token (for GitHub Authorization tests)
+- base_url
+- x-api-key
+- github_token (for GitHub Authorization tests)
 
 4. **Run Folders or Collections**:
 Use Collection Runner or Newman (optional) to automate full runs.
